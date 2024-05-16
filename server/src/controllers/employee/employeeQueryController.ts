@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getEmployees, getEmployeeById } from '../services/employeeQueryService';
+import { getEmployees, getEmployeeById } from '../../services/employeeQueryService';
 
 export const getAllEmployees = async (req: Request, res: Response) => {
   try {

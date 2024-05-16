@@ -1,6 +1,6 @@
 import express from 'express';
-import { addEmployee, editEmployee, removeEmployee } from '../controllers/employeeCommandController';
-import { getAllEmployees, getEmployee } from '../controllers/employeeQueryController';
+import { addEmployee, editEmployee, removeEmployee } from '../controllers/employee/employeeCommandController';
+import { getAllEmployees, getEmployee } from '../controllers/employee/employeeQueryController';
 
 const router = express.Router();
 

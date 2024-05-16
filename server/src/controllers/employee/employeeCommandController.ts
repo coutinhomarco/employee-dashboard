@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createEmployee, updateEmployee, deleteEmployee } from '../services/employeeCommandService';
+import { createEmployee, updateEmployee, deleteEmployee } from '../../services/employeeCommandService';
 
 export const addEmployee = async (req: Request, res: Response) => {
   try {
