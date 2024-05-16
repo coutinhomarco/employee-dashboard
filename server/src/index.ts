@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import employeeRoutes from './routes/employeeRoutes';
-
+import jobRoutes from './routes/jobRoutes';
 
 dotenv.config();
 
@@ -20,6 +20,7 @@ mongoose.connect(MONGODB_URI)
   .catch(err => console.error('MongoDB connection error:', err));
 
 app.use('/api', employeeRoutes);
+app.use('/api', jobRoutes);
 
 
 app.listen(PORT, () => {
