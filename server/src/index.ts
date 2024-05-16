@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import employeeRoutes from './routes/employeeRoutes';
+
 
 dotenv.config();
 
@@ -16,6 +18,9 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/employ
 mongoose.connect(MONGODB_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
+
+app.use('/api', employeeRoutes);
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
