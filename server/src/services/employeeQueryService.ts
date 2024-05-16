@@ -2,23 +2,20 @@ import { queryQueue, queryQueueEvents } from '../utils/bullmq';
 
 export const getEmployees = async () => {
   try {
-    const job = await queryQueue.add('getAllEmployees', {});
-    const employees = await job.waitUntilFinished(queryQueueEvents);
-    return { status: 200, data: employees || [], message: employees ? null : 'No employees found'};
+    const job = await queryQueue.add('getAllEmployees', {});  
+    return { status: 200, message: 'Employees retrieval in progress', data: job.id};
   } catch (error: any) {
     return { status: 500, message: error.message };
   }
 };
 
-export const getEmployeeById = async (id: string) => {
-  if (!id) {
-    return { status: 400, message: 'Employee ID is required' };
-  }
-
+export const getEmployeeById = async (id: string) => {  
   try {
+    if (!id) {
+      return { status: 400, message: 'Employee ID is required' };
+    }
     const job = await queryQueue.add('getEmployeeById', {});
-    const employee = await job.waitUntilFinished(queryQueueEvents);
-    return { status: 200, data: employee || null, message: employee ? null : 'Employee not found'};
+    return { status: 200, message: 'Employee retrieval in progress', data: job.id};
   } catch (error: any) {
     return { status: 500, message: error.message };
   }

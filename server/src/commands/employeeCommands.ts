@@ -1,13 +1,13 @@
-import { createEmployee, updateEmployee, deleteEmployee } from '../services/employeeCommandService';
+import Employee from '../models/employeeModel';
 
 export const addEmployeeCommand = async (data: any) => {
-  return await createEmployee(data);
+  return await Employee.create(data);
 };
 
 export const editEmployeeCommand = async (id: string, data: any) => {
-  return await updateEmployee(id, data);
+  return await Employee.findByIdAndUpdate(id, data);
 };
 
 export const removeEmployeeCommand = async (id: string) => {
-  return await deleteEmployee(id);
+  return await Employee.findByIdAndDelete(id);
 };

@@ -1,9 +1,9 @@
-import { getEmployees, getEmployeeById } from '../services/employeeQueryService';
+import Employee from '../models/employeeModel';
 
 export const getAllEmployeesQuery = async () => {
-  return await getEmployees();
+  return await Employee.find();
 };
 
 export const getEmployeeByIdQuery = async (id: string) => {
-  return await getEmployeeById(id);
+  return await Employee.findById(id);
 };

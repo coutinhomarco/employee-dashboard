@@ -13,7 +13,7 @@ export const addEmployee = async (req: Request, res: Response) => {
 export const editEmployee = async (req: Request, res: Response) => {
   try {
     const result = await updateEmployee(req.params.id, req.body);
-    return res.status(result?.status).json({ message: result?.message || null });
+    return res.status(result?.status).json({ message: result?.message || null, data: result?.data || null});
   } catch (error) {
     return res.status(500).json({ error: 'Failed to update employee' });
   }
@@ -22,7 +22,7 @@ export const editEmployee = async (req: Request, res: Response) => {
 export const removeEmployee = async (req: Request, res: Response) => {
   try {
     const result = await deleteEmployee(req.params.id);
-    return res.status(result?.status).json({ message: result?.message || null });
+    return res.status(result?.status).json({ message: result?.message || null, data: result?.data || null });
   } catch (error) {
     return res.status(500).json({ error: 'Failed to remove employee' });
   }
