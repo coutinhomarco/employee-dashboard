@@ -1,23 +1,20 @@
 import { Request, Response } from 'express';
-import { getAllEmployeesQuery, getEmployeeByIdQuery } from '../queries/employeeQueries';
+import { getEmployees, getEmployeeById } from '../services/employeeQueryService';
 
 export const getAllEmployees = async (req: Request, res: Response) => {
   try {
-    const employees = await getAllEmployeesQuery();
-    res.json(employees);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch employees' });
+    const result = await getEmployees();
+    return res.status(result?.status).json({ message: result?.message || null });
+  } catch (error) {
+    return res.status(500).json({ error: 'Failed to add employee' });
   }
 };
 
 export const getEmployee = async (req: Request, res: Response) => {
   try {
-    const employee = await getEmployeeByIdQuery(req.params.id);
-    if (!employee) {
-      return res.status(404).json({ error: 'Employee not found' });
-    }
-    res.json(employee);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch employee' });
+    const result = await getEmployeeById(req.params.id);
+    return res.status(result?.status).json({ message: result?.message || null });
+  } catch (error) {
+    return res.status(500).json({ error: 'Failed to add employee' });
   }
 };
