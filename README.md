@@ -42,7 +42,6 @@ Redis is used as a message broker and caching layer. It improves the performance
 
 Here is an overview of the project's architecture:
 
-<!-- ![Architecture Diagram](diagram.png) -->
 ![Architecture Diagram](flow.png)
 
 
