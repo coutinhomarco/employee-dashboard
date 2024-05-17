@@ -76,7 +76,7 @@ describe('Employee Service Validations', () => {
       const response = await EmployeeQueryService.getEmployeeById('123');
 
       expect(response).toEqual({ status: 200, message: 'Employee retrieval in progress', data: 'job-id' });
-      expect(queryQueueMock.add).toHaveBeenCalledWith('getEmployeeById', {}, expect.any(Object));
+      expect(queryQueueMock.add).toHaveBeenCalledWith('getEmployeeById', {id: "123"}, expect.any(Object));
     });
   });
 

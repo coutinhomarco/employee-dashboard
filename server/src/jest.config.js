@@ -4,5 +4,5 @@ module.exports = {
   transform: {
     '^.+\\.tsx?$': 'babel-jest',
   },
-  testMatch: ['**/tests/**/*.test.ts'], // Adjust the test directory as needed
+  testMatch: ['**/tests/**/*.test.ts'],
 };

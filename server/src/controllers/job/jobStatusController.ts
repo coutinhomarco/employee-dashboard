@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { JobService } from '../../services/job/jobService'; // Adjust the path if needed
+import { JobService } from '../../services/job/jobService';
 
 export const getJobStatus = async (req: Request, res: Response) => {
   const { id } = req.params;
