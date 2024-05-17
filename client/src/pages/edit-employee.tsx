@@ -33,27 +33,52 @@ const EditEmployee = () => {
           throw new Error('Failed to fetch employee details.');
         }
         const data = await response.json();
-        setEmployee(data);
-        setName(data.name);
-        setPosition(data.position);
-        setDepartment(data.department);
-
-        // Ensure the date is formatted correctly for the input field
-        const formattedDate = new Date(data.dateOfHire).toISOString().split('T')[0];
-        console.log(formattedDate);
         
-        if (isNaN(new Date(formattedDate).getTime())) {
-          throw new Error('Invalid date format received.');
+        if (data.message === 'Employee retrieval in progress') {
+          pollJobStatus(data.data);
+        } else {
+          setEmployeeData(data);
         }
-        setDateOfHire(formattedDate);
-
-        setLoading(false);
       } catch (error) {
         setError('Failed to load employee details.');
         console.error('Error fetching employee details:', error);
         setLoading(false);
       }
     };
+
+    const pollJobStatus = async (jobId: string) => {
+      const interval = setInterval(async () => {
+        try {
+          const response = await fetch(`${apiUrl}/api/job/${jobId}/status`);
+          const data = await response.json();
+          
+          if (data.state === 'completed') {
+            clearInterval(interval);
+            setEmployeeData(data.result);
+            setLoading(false);
+          } else if (data.state === 'failed') {
+            clearInterval(interval);
+            setError(data.failedReason);
+            setLoading(false);
+          }
+        } catch (error) {
+          clearInterval(interval);
+          setError('Error fetching job status.');
+          console.error(error);
+          setLoading(false);
+        }
+      }, 1000);
+    };
+
+    const setEmployeeData = (data: Employee) => {
+      setEmployee(data);
+      setName(data.name);
+      setPosition(data.position);
+      setDepartment(data.department);
+      const formattedDate = new Date(data.dateOfHire).toISOString().split('T')[0];
+      setDateOfHire(formattedDate);
+    };
+
     if (id) {
       fetchEmployee();
     }

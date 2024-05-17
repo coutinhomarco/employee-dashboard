@@ -10,11 +10,11 @@ export class EmployeeQueryService {
     }
   }
   static async getEmployeeById(id: string): Promise<ReturnInterface> {  
-    try {
+    try {      
       if (!id) {
         return { status: 400, message: 'Employee ID is required' };
       }
-      const job = await queryQueue.add('getEmployeeById', {}, {jobId: `getEmployeeById-${id}-${Date.now()}`});
+      const job = await queryQueue.add('getEmployeeById', {id}, {jobId: `getEmployeeById-${id}-${Date.now()}`});
       return { status: 200, message: 'Employee retrieval in progress', data: job.id};
     } catch (error: any) {
       return { status: 500, message: error.message };

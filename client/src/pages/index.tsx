@@ -65,7 +65,7 @@ const Home = () => {
           setError(data.failedReason);
           setLoading(false);
         }
-      }, 1300); // Poll every 1.3 seconds
+      }, 800); // Poll every 0.8 seconds
     } catch (error) {
       setError('Error fetching job status.');
       console.error(error);
@@ -127,7 +127,7 @@ const Home = () => {
               <Td>{employee.name}</Td>
               <Td>{employee.position}</Td>
               <Td>{employee.department}</Td>
-              <Td>{new Date(employee.dateOfHire).toLocaleDateString('pt-BR')}</Td>
+              <Td>{new Date(employee.dateOfHire).toLocaleDateString('en-US')}</Td>
               <Td>
                 <Button
                   colorScheme="blue"

@@ -2,6 +2,7 @@ import { Queue, Worker, QueueEvents } from 'bullmq';
 import IORedis from 'ioredis';
 import { addEmployeeCommand, editEmployeeCommand, removeEmployeeCommand } from '../commands/employeeCommands';
 import { getAllEmployeesQuery, getEmployeeByIdQuery } from '../queries/employeeQueries';
+import { log } from 'console';
 
 const connection = new IORedis({
   host: '127.0.0.1',
@@ -41,7 +42,7 @@ export const commandWorker = new Worker('commandQueue', async job => {
 export const queryWorker = new Worker('queryQueue', async job => {
   try {    
     switch (job.name) {
-      case 'getEmployeeById':        
+      case 'getEmployeeById':
         const employee = await getEmployeeByIdQuery(job.data.id);
         job.updateProgress(100);
         return employee
