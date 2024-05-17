@@ -4,8 +4,8 @@ import { addEmployeeCommand, editEmployeeCommand, removeEmployeeCommand } from '
 import { getAllEmployeesQuery, getEmployeeByIdQuery } from '../queries/employeeQueries';
 
 const connection = new IORedis({
-  host: '127.0.0.1',
-  port: 6379,
+  host: process.env.REDIS_URL || '127.0.0.1',
+  port: Number(process.env.REDIS_PORT) || 6379,
   maxRetriesPerRequest: null,
 });
 
