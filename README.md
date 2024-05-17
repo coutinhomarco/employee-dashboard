@@ -1,6 +1,7 @@
 
----
+### Updated README
 
+```markdown
 # Employee Management Dashboard
 
 This is a simple employee management dashboard built with Next.js, Chakra UI, and a Node.js backend with Express and MongoDB. The dashboard allows users to manage a list of employees, including adding, editing, and deleting employee records.
@@ -12,6 +13,7 @@ This is a simple employee management dashboard built with Next.js, Chakra UI, an
 - [Running the Application](#running-the-application)
 - [Project Structure](#project-structure)
 - [API Endpoints](#api-endpoints)
+- [Testing](#testing)
 - [Future Enhancements](#future-enhancements)
 - [Contributing](#contributing)
 - [License](#license)
@@ -52,16 +54,22 @@ yarn install
 ## Running the Application
 
 ### Setup Environment Variables
-Create a `.env.local` file in the root of the project and add the following environment variables:
+Create a `.env` file in the `server` directory and a `.env.local` file in the `client` directory and add the following environment variables:
 
+#### `.env` (Server)
+```env
+MONGODB_URI=mongodb://localhost:27017/your-db-name
+REDIS_URL=redis://localhost:6379
+```
+
+#### `.env.local` (Client)
 ```env
 NEXT_PUBLIC_API_BASE_URL=http://localhost:5000
 ```
 
 ### Start the Backend Server
 ```bash
-# Navigate to the backend directory if needed
-cd backend
+cd server
 npm run dev
 # or
 yarn dev
@@ -69,8 +77,7 @@ yarn dev
 
 ### Start the Frontend Server
 ```bash
-# Navigate to the frontend directory if needed
-cd frontend
+cd client
 npm run dev
 # or
 yarn dev
@@ -83,27 +90,39 @@ Open your browser and go to `http://localhost:3000`.
 
 ```plaintext
 employee-management-dashboard/
-├── backend/
-│   ├── src/
-│   │   ├── controllers/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   ├── services/
-│   │   ├── utils/
-│   │   └── index.ts
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── .env
-├── frontend/
+├── client/
 │   ├── public/
 │   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
+│   │   ├── app/
+│   │   │   ├── components/
+│   │   │   ├── pages/
+│   │   │   │   ├── _app.tsx
+│   │   │   │   ├── add-employee.tsx
+│   │   │   │   ├── edit-employee.tsx
+│   │   │   │   └── index.tsx
 │   │   ├── styles/
 │   │   └── utils/
 │   ├── package.json
 │   ├── tsconfig.json
 │   └── .env.local
+├── server/
+│   ├── src/
+│   │   ├── commands/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── queries/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   ├── validations/
+│   │   ├── bullmq.ts
+│   │   └── index.ts
+│   ├── tests/
+│   ├── jest.config.js
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── .env
 ├── README.md
 └── package.json
 ```
@@ -120,9 +139,48 @@ employee-management-dashboard/
 ### Job Status Endpoints
 - `GET /api/job/:id/status`: Retrieve the status of a job by job ID
 
+## Testing
+
+### Running Tests
+This project uses Jest for testing. To run the tests, use the following command:
+
+```bash
+cd server
+npm test
+# or
+yarn test
+```
+
+### Example Test File Structure
+
+#### `server/tests/controllers/employeeCommandController.test.ts`
+```typescript
+import request from 'supertest';
+import { app } from '../../src/index';
+import { Employee } from '../../src/models/employeeModel';
+
+describe('Employee Command Controller', () => {
+  it('should create a new employee', async () => {
+    const response = await request(app)
+      .post('/api/employees')
+      .send({
+        name: 'John Doe',
+        position: 'Software Engineer',
+        department: 'Engineering',
+        dateOfHire: '2023-01-01',
+      });
+    expect(response.status).toBe(201);
+    expect(response.body).toHaveProperty('message', 'Employee addition in progress');
+  });
+
+  // Add more tests for update and delete operations
+});
+```
+
 ## Future Enhancements
 - Add authentication and authorization
 - Implement pagination for employee list
 - Add unit and integration tests
 - Enhance error handling and validation
----
+
+```
