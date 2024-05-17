@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
 import User, { IUser } from '../../models/userModel';
 
 interface JwtPayload {
@@ -7,8 +6,9 @@ interface JwtPayload {
 }
 
 const secret = process.env.JWT_SECRET || 'secret';
+
 const generateToken = (id: string): string => {
-  return jwt.sign({ id }, secret as string, {
+  return jwt.sign({ id }, secret, {
     expiresIn: '30d',
   });
 };
@@ -19,12 +19,9 @@ const registerUser = async (username: string, password: string): Promise<IUser> 
     throw new Error('Username already exists');
   }
 
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
-
   const user = new User({
     username,
-    password: hashedPassword,
+    password,
   });
 
   await user.save();
@@ -32,9 +29,13 @@ const registerUser = async (username: string, password: string): Promise<IUser> 
 };
 
 const loginUser = async (username: string, password: string): Promise<IUser | null> => {
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ username }).exec() as IUser | null;
 
-  if (user && (await bcrypt.compare(password, user.password))) {
+  if (!user) {
+    return null;
+  }
+  const isPasswordMatch = await user.matchPassword(password);
+  if (isPasswordMatch) {
     return user;
   }
 
@@ -43,8 +44,8 @@ const loginUser = async (username: string, password: string): Promise<IUser | nu
 
 const verifyToken = async (token: string): Promise<IUser | null> => {
   try {
-    const decoded = jwt.verify(token, secret as string) as JwtPayload;
-    const user = await User.findById(decoded.id).select('-password');
+    const decoded = jwt.verify(token, secret) as JwtPayload;
+    const user = await User.findById(decoded.id).select('-password').exec() as IUser | null;
     return user || null;
   } catch (error) {
     return null;

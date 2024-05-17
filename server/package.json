@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "dev": "nodemon --exec ts-node-dev src/index.ts",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "seed": "ts-node src/utils/seed.ts"
   },
   "keywords": [],
   "author": "",

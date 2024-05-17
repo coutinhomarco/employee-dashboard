@@ -1,7 +1,7 @@
 import { log } from 'console';
-import { Employee } from '../../../types/employee';
+import { EmployeeType } from '../../../types/employee';
 
-export const validateEmployeeData = (data: Employee) => {
+export const validateEmployeeData = (data: EmployeeType) => {
   if (!data.name) {
     return { isValid: false, message: 'Name is required' };
   }
