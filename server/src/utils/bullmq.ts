@@ -18,6 +18,7 @@ export const queryQueueEvents = new QueueEvents('queryQueue', { connection });
 export const commandWorker = new Worker('commandQueue', async job => {
   try {
     switch (job.name) {
+
       case 'addEmployee':
         await addEmployeeCommand(job.data);
         break;
@@ -27,6 +28,8 @@ export const commandWorker = new Worker('commandQueue', async job => {
       case 'removeEmployee':
         await removeEmployeeCommand(job.data.id);
         break;
+      default:
+        throw new Error('Unknown job name');
     }
   } catch (error) {
     console.log(error);
@@ -34,15 +37,17 @@ export const commandWorker = new Worker('commandQueue', async job => {
 }, { connection });
 
 export const queryWorker = new Worker('queryQueue', async job => {
-  try {
+  try {    
     switch (job.name) {
-      case 'getEmployee':
-        await getEmployeeByIdQuery(job.data.id);
+      case 'getEmployeeById':        
+        return await getEmployeeByIdQuery(job.data.id);
         break;
-      case 'getEmployees':
-        await getAllEmployeesQuery();
+      case 'getAllEmployees':
+        return await getAllEmployeesQuery();
         break;
-    }
+      default:
+        throw new Error('Unknown job name');
+  }
   } catch (error) {
     console.log(error);
   }

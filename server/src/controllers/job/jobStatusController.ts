@@ -5,6 +5,7 @@ export const getJobStatus = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const job = await commandQueue.getJob(id) || await queryQueue.getJob(id);
+    
     if (!job) {
       return res.status(404).json({ error: 'Job not found' });
     }
