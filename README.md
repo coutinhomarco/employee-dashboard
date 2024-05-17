@@ -8,6 +8,7 @@ This is a simple employee management dashboard built with Next.js, Chakra UI, an
 - [Architecture](#architecture)
 - [Installation](#installation)
 - [Running the Application](#running-the-application)
+- [Seeding the Database](#seeding-the-database)
 - [Project Structure](#project-structure)
 - [API Endpoints](#api-endpoints)
 - [Testing](#testing)
@@ -104,6 +105,75 @@ yarn dev
 ### Access the Application
 Open your browser and go to `http://localhost:3000`.
 
+## Seeding the Database
+
+To seed the database with initial employee data, you can use the `seed.ts` script. This script connects to the MongoDB database, drops any existing data, and inserts a predefined list of employees.
+
+### Seed Script
+
+The `seed.ts` script is located in the `src/utils` directory. Here is an overview of what the script does:
+
+```typescript
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import Employee from '../models/employeeModel';
+
+dotenv.config();
+
+const mongoUri = process.env.DATABASE_URL as string;
+
+const employees = [
+  {
+    name: 'John Doe',
+    position: 'Software Engineer',
+    department: 'Engineering',
+    dateOfHire: new Date('2020-06-25'),
+  },
+  {
+    name: 'Jane Smith',
+    position: 'Product Manager',
+    department: 'Product',
+    dateOfHire: new Date('2018-05-15'),
+  },
+];
+
+const seedDatabase = async () => {
+  try {
+    await mongoose.connect(mongoUri);
+
+    console.log('Connected to MongoDB');
+
+    // Clean up the database
+    await mongoose.connection.db.dropDatabase();
+
+    // Insert employees
+    await Employee.insertMany(employees);
+
+    console.log('Database seeded successfully');
+
+    mongoose.disconnect();
+    console.log('Disconnected from MongoDB');
+  } catch (error) {
+    console.error('Error seeding the database:', error);
+    process.exit(1);
+  }
+};
+
+seedDatabase();
+```
+
+### Running the Seed Script
+
+Run the seed script using npm or yarn:
+
+```bash
+npm run seed
+# or
+yarn seed
+```
+
+This will populate your MongoDB database with the initial employee data.
+
 ## Project Structure
 
 ```plaintext
@@ -133,7 +203,7 @@ employee-management-dashboard/
 │   │   ├── utils/
 │   │   │   ├── bullmq.ts
 │   │   │   ├── validations/
-│   │   │   └── intefaces/
+│   │   │   └── interfaces/
 │   │   └── index.ts
 │   ├── tests/
 │   ├── jest.config.js
@@ -161,9 +231,7 @@ employee-management-dashboard/
 ### Job Status Endpoints
 - `GET /api/job/:id/status`: Retrieve the status of a job by job ID
 
-Here are some request and response examples for the various API endpoints, which you can add to your README:
-
-## API Endpoints
+Here are some request and response examples for the various API endpoints:
 
 ### Authentication Endpoints
 
@@ -357,7 +425,6 @@ Here are some request and response examples for the various API endpoints, which
     ```
 
 Feel free to include these examples in your README to help users understand how to interact with your API.
-
 
 ## Testing
 
