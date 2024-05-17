@@ -1,5 +1,5 @@
 import { createEmployee, updateEmployee, deleteEmployee } from '../src/services/employeeCommandService'; // Adjust the path as needed
-import {getEmployees, getEmployeeById} from '../src/services/employeeQueryService'; // Adjust the path as needed
+import { getEmployees, getEmployeeById } from '../src/services/employeeQueryService'; // Adjust the path as needed
 import { mock, MockProxy } from 'jest-mock-extended';
 import { Queue, Job } from 'bullmq';
 import { Employee } from '../src/types/employee';
@@ -81,12 +81,17 @@ describe('Employee Service Validations', () => {
   });
 
   describe('createEmployee', () => {
+    const baseEmployee: Employee = {
+      name: 'John',
+      position: 'Developer',
+      department: 'Engineering',
+      dateOfHire: new Date().toISOString(),
+    };
+
     it('should return status 400 if any required field is missing', async () => {
       const invalidData: Employee = {
+        ...baseEmployee,
         name: '',
-        position: '',
-        department: '',
-        dateOfHire: ''
       };
 
       const response = await createEmployee(invalidData);
@@ -97,9 +102,7 @@ describe('Employee Service Validations', () => {
 
     it('should return status 400 if dateOfHire is in the future', async () => {
       const invalidData: Employee = {
-        name: 'John',
-        position: 'Developer',
-        department: 'Engineering',
+        ...baseEmployee,
         dateOfHire: new Date(Date.now() + 86400000).toISOString(), // Future date
       };
 
@@ -111,9 +114,7 @@ describe('Employee Service Validations', () => {
 
     it('should return status 400 if dateOfHire is not a string', async () => {
       const invalidData = {
-        name: 'John',
-        position: 'Developer',
-        department: 'Engineering',
+        ...baseEmployee,
         dateOfHire: new Date(), // Date object instead of string
       } as unknown as Employee;
 
@@ -124,12 +125,7 @@ describe('Employee Service Validations', () => {
     });
 
     it('should add a job to commandQueue and return status 201', async () => {
-      const validData: Employee = {
-        name: 'John',
-        position: 'Developer',
-        department: 'Engineering',
-        dateOfHire: new Date().toISOString(),
-      };
+      const validData: Employee = baseEmployee;
 
       commandQueueMock.add.mockResolvedValueOnce(mockJob);
 
@@ -141,12 +137,17 @@ describe('Employee Service Validations', () => {
   });
 
   describe('updateEmployee', () => {
+    const baseEmployee: Employee = {
+      name: 'John',
+      position: 'Developer',
+      department: 'Engineering',
+      dateOfHire: new Date().toISOString(),
+    };
+
     it('should return status 400 if any required field is missing', async () => {
       const invalidData: Employee = {
+        ...baseEmployee,
         name: '',
-        position: '',
-        department: '',
-        dateOfHire: ''
       };
 
       const response = await updateEmployee('123', invalidData);
@@ -157,9 +158,7 @@ describe('Employee Service Validations', () => {
 
     it('should return status 400 if dateOfHire is in the future', async () => {
       const invalidData: Employee = {
-        name: 'John',
-        position: 'Developer',
-        department: 'Engineering',
+        ...baseEmployee,
         dateOfHire: new Date(Date.now() + 86400000).toISOString(), // Future date
       };
 
@@ -171,9 +170,7 @@ describe('Employee Service Validations', () => {
 
     it('should return status 400 if dateOfHire is not a string', async () => {
       const invalidData = {
-        name: 'John',
-        position: 'Developer',
-        department: 'Engineering',
+        ...baseEmployee,
         dateOfHire: new Date(), // Date object instead of string
       } as unknown as Employee;
 
@@ -184,12 +181,7 @@ describe('Employee Service Validations', () => {
     });
 
     it('should add a job to commandQueue and return status 201', async () => {
-      const validData: Employee = {
-        name: 'John',
-        position: 'Developer',
-        department: 'Engineering',
-        dateOfHire: new Date().toISOString(),
-      };
+      const validData: Employee = baseEmployee;
 
       commandQueueMock.add.mockResolvedValueOnce(mockJob);
 
