@@ -67,7 +67,7 @@ const AddEmployee = () => {
           setError(data.failedReason);
           setLoading(false);
         }
-      }, 800); // Poll every 0.8 seconds
+      }, 500); // Poll every 0.8 seconds
     } catch (error) {
       setError('Error fetching job status.');
       console.error(error);

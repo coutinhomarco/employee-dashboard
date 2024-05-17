@@ -67,7 +67,7 @@ const EditEmployee = () => {
           console.error(error);
           setLoading(false);
         }
-      }, 1000);
+      }, 500);
     };
 
     const setEmployeeData = (data: Employee) => {

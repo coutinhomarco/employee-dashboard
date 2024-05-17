@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { Table, Thead, Tbody, Tr, Th, Td, Button, Box, Input, Text, Spinner } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Th, Td, Button, Box, Input, Text, Spinner, useDisclosure, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react';
 import Layout from '../app/components/Layout';
 
 type Employee = {
@@ -16,6 +16,9 @@ const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [employeeToDelete, setEmployeeToDelete] = useState<Employee | null>(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef(null);
 
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -73,14 +76,16 @@ const Home = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async () => {
+    if (!employeeToDelete) return;
+
     const previousEmployees = employees;
 
     // Optimistically update the state
-    setEmployees(employees.filter(employee => employee._id !== id));
+    setEmployees(employees.filter(employee => employee._id !== employeeToDelete._id));
 
     try {
-      const response = await fetch(`${apiUrl}/api/employees/${id}`, {
+      const response = await fetch(`${apiUrl}/api/employees/${employeeToDelete._id}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
@@ -88,12 +93,19 @@ const Home = () => {
       }
       const data = await response.json();
       pollJobStatus(data.data);
+      onClose();
     } catch (error) {
       // Revert to the previous state if the deletion fails
       setEmployees(previousEmployees);
       setError('Failed to delete employee. Please try again later.');
       console.error(error);
+      onClose();
     }
+  };
+
+  const openDeleteConfirm = (employee: Employee) => {
+    setEmployeeToDelete(employee);
+    onOpen();
   };
 
   const filteredEmployees = employees.filter(employee =>
@@ -138,7 +150,7 @@ const Home = () => {
                 >
                   Edit
                 </Button>
-                <Button colorScheme="red" onClick={() => handleDelete(employee._id)}>
+                <Button colorScheme="red" onClick={() => openDeleteConfirm(employee)}>
                   Delete
                 </Button>
               </Td>
@@ -146,6 +158,32 @@ const Home = () => {
           ))}
         </Tbody>
       </Table>
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Employee
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure you want to delete this employee? This action cannot be undone.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={handleDelete} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </Layout>
   );
 };
