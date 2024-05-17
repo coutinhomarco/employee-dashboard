@@ -165,11 +165,11 @@ const Home = () => {
       >
         <AlertDialogOverlay>
           <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+            <AlertDialogHeader color={'gray'} fontSize="lg" fontWeight="bold">
               Delete Employee
             </AlertDialogHeader>
 
-            <AlertDialogBody>
+            <AlertDialogBody color={'gray'}>
               Are you sure you want to delete this employee? This action cannot be undone.
             </AlertDialogBody>
 
