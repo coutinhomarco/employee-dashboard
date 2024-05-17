@@ -22,7 +22,7 @@ mongoose.connect(MONGODB_URI)
 
 app.use('/api', employeeRoutes);
 app.use('/api', jobRoutes);
-app.use('/api', authRoutes)
+app.use('/api', authRoutes);
 
 
 app.listen(PORT, () => {

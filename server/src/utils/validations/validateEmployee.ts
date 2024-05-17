@@ -5,7 +5,7 @@ export const validateEmployeeData = (data: Employee) => {
   if (!data.name) {
     return { isValid: false, message: 'Name is required' };
   }
-  
+
   if (!data.position) {
     return { isValid: false, message: 'Position is required' };
   }

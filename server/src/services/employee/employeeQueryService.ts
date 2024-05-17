@@ -3,14 +3,14 @@ import { ReturnInterface } from '../../utils/interfaces/returnInterface';
 export class EmployeeQueryService {
   static async getEmployees(): Promise<ReturnInterface> {
     try {
-      const job = await queryQueue.add('getAllEmployees', {}, {jobId: `getAllEmployees-${Date.now()}`})    
+      const job = await queryQueue.add('getAllEmployees', {}, {jobId: `getAllEmployees-${Date.now()}`});
       return { status: 200, message: 'Employees retrieval in progress', data: job.id};
     } catch (error: any) {
       return { status: 500, message: error.message };
     }
   }
-  static async getEmployeeById(id: string): Promise<ReturnInterface> {  
-    try {      
+  static async getEmployeeById(id: string): Promise<ReturnInterface> {
+    try {
       if (!id) {
         return { status: 400, message: 'Employee ID is required' };
       }
@@ -19,5 +19,5 @@ export class EmployeeQueryService {
     } catch (error: any) {
       return { status: 500, message: error.message };
     }
-  };
+  }
 }

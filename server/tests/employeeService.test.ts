@@ -1,8 +1,8 @@
 import { EmployeeCommandService } from '../src/services/employee/employeeCommandService';
 import { EmployeeQueryService } from '../src/services/employee/employeeQueryService';
-import { mock, MockProxy } from 'jest-mock-extended';
+import { MockProxy } from 'jest-mock-extended';
 import { Queue, Job } from 'bullmq';
-import { Employee } from '../types/employee';
+import { EmployeeType } from '../types/employee';
 
 // Mocking the queryQueue and commandQueue
 jest.mock('../src/utils/bullmq', () => {
@@ -76,12 +76,12 @@ describe('Employee Service Validations', () => {
       const response = await EmployeeQueryService.getEmployeeById('123');
 
       expect(response).toEqual({ status: 200, message: 'Employee retrieval in progress', data: 'job-id' });
-      expect(queryQueueMock.add).toHaveBeenCalledWith('getEmployeeById', {id: "123"}, expect.any(Object));
+      expect(queryQueueMock.add).toHaveBeenCalledWith('getEmployeeById', {id: '123'}, expect.any(Object));
     });
   });
 
   describe('createEmployee', () => {
-    const baseEmployee: Employee = {
+    const baseEmployee: EmployeeType = {
       name: 'John',
       position: 'Developer',
       department: 'Engineering',
@@ -89,7 +89,7 @@ describe('Employee Service Validations', () => {
     };
 
     it('should return status 400 if any required field is missing', async () => {
-      const invalidData: Employee = {
+      const invalidData: EmployeeType = {
         ...baseEmployee,
         name: '',
       };
@@ -101,7 +101,7 @@ describe('Employee Service Validations', () => {
     });
 
     it('should return status 400 if dateOfHire is in the future', async () => {
-      const invalidData: Employee = {
+      const invalidData: EmployeeType = {
         ...baseEmployee,
         dateOfHire: new Date(Date.now() + 86400000).toISOString(), // Future date
       };
@@ -116,7 +116,7 @@ describe('Employee Service Validations', () => {
       const invalidData = {
         ...baseEmployee,
         dateOfHire: new Date(), // Date object instead of string
-      } as unknown as Employee;
+      } as unknown as EmployeeType;
 
       const response = await EmployeeCommandService.createEmployee(invalidData);
 
@@ -125,7 +125,7 @@ describe('Employee Service Validations', () => {
     });
 
     it('should add a job to commandQueue and return status 201', async () => {
-      const validData: Employee = baseEmployee;
+      const validData: EmployeeType = baseEmployee;
 
       commandQueueMock.add.mockResolvedValueOnce(mockJob);
 
@@ -137,7 +137,7 @@ describe('Employee Service Validations', () => {
   });
 
   describe('updateEmployee', () => {
-    const baseEmployee: Employee = {
+    const baseEmployee: EmployeeType = {
       name: 'John',
       position: 'Developer',
       department: 'Engineering',
@@ -145,7 +145,7 @@ describe('Employee Service Validations', () => {
     };
 
     it('should return status 400 if any required field is missing', async () => {
-      const invalidData: Employee = {
+      const invalidData: EmployeeType = {
         ...baseEmployee,
         name: '',
       };
@@ -157,7 +157,7 @@ describe('Employee Service Validations', () => {
     });
 
     it('should return status 400 if dateOfHire is in the future', async () => {
-      const invalidData: Employee = {
+      const invalidData: EmployeeType = {
         ...baseEmployee,
         dateOfHire: new Date(Date.now() + 86400000).toISOString(), // Future date
       };
@@ -172,7 +172,7 @@ describe('Employee Service Validations', () => {
       const invalidData = {
         ...baseEmployee,
         dateOfHire: new Date(), // Date object instead of string
-      } as unknown as Employee;
+      } as unknown as EmployeeType;
 
       const response = await EmployeeCommandService.updateEmployee('123', invalidData);
 
@@ -181,7 +181,7 @@ describe('Employee Service Validations', () => {
     });
 
     it('should add a job to commandQueue and return status 201', async () => {
-      const validData: Employee = baseEmployee;
+      const validData: EmployeeType = baseEmployee;
 
       commandQueueMock.add.mockResolvedValueOnce(mockJob);
 

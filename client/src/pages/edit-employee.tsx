@@ -14,7 +14,6 @@ type Employee = {
 };
 
 const EditEmployee = () => {
-  const [employee, setEmployee] = useState<Employee | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [name, setName] = useState('');
@@ -85,7 +84,6 @@ const EditEmployee = () => {
     };
 
     const setEmployeeData = (data: Employee) => {
-      setEmployee(data);
       setName(data.name);
       setPosition(data.position);
       setDepartment(data.department);
@@ -162,6 +160,10 @@ const EditEmployee = () => {
               <option value="HR">HR</option>
               <option value="Engineering">Engineering</option>
               <option value="Marketing">Marketing</option>
+              <option value="Sales">Sales</option>
+              <option value="Finance">Finance</option>
+              <option value="Operations">Operations</option>
+              <option value="Director">Director</option>
             </Select>
           </FormControl>
           <FormControl id="dateOfHire" mb={4} isRequired>

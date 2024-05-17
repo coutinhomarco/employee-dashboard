@@ -2,8 +2,8 @@ import { commandQueue, queryQueue } from '../../utils/bullmq';
 
 export class JobService {
 
-  static async getJobStatus(id: string): Promise<any> {
-    const job = await commandQueue.getJob(id) || await queryQueue.getJob(id);    
+  static async getJobStatus(id: string): Promise<{id?: string, state?: string, progress: number | object, result: string, failedReason: string}> {
+    const job = await commandQueue.getJob(id) || await queryQueue.getJob(id);
     if (!job) {
       throw new Error('Job not found');
     }

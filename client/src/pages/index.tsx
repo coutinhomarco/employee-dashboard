@@ -169,7 +169,7 @@ const Home = () => {
                 <Td>{employee.name}</Td>
                 <Td>{employee.position}</Td>
                 <Td>{employee.department}</Td>
-                <Td>{new Date(employee.dateOfHire).toLocaleDateString('en-US')}</Td>
+                <Td>{new Date(employee.dateOfHire).toLocaleDateString('pt-BR')}</Td>
                 <Td>
                   <Button
                     colorScheme="blue"

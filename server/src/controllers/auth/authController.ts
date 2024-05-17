@@ -6,16 +6,12 @@ export const registerUser = async (req: Request, res: Response) => {
 
   try {
     const user = await authService.registerUser(username, password);
-    console.log(user);
-    
     res.status(201).json({
       _id: user._id,
       username: user.username,
       token: authService.generateToken(user._id.toString()),
     });
   } catch (error:any) {
-    console.log(error);
-    
     if (error.message === 'Username already exists') {
       res.status(400).json({ message: 'Username already exists' });
     } else {

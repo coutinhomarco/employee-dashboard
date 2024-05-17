@@ -1,11 +1,11 @@
 import { commandQueue } from '../../utils/bullmq';
-import { Employee } from '../../../types/employee';
+import { EmployeeType } from '../../../types/employee';
 import { validateEmployeeData } from '../../utils/validations/validateEmployee';
 import { ReturnInterface } from '../../utils/interfaces/returnInterface';
 
 
 export class EmployeeCommandService {
-  static async createEmployee(data: Employee): Promise<ReturnInterface> {
+  static async createEmployee(data: EmployeeType): Promise<ReturnInterface> {
     try {
       const { isValid, message } = validateEmployeeData(data);
       if (!isValid) {
@@ -20,7 +20,7 @@ export class EmployeeCommandService {
     }
   }
 
-  static async updateEmployee(id: string, data: Employee): Promise<ReturnInterface> {
+  static async updateEmployee(id: string, data: EmployeeType): Promise<ReturnInterface> {
     try {
       const { isValid, message } = validateEmployeeData(data);
       if (!isValid) {
@@ -46,6 +46,6 @@ export class EmployeeCommandService {
     } catch (error: any) {
       return { status: 500, message: error.message };
     }
-  
+
   }
 }

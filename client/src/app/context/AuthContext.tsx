@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 
 interface AuthContextProps {
-  user: any;
+  user: { token: string };
   login: (username: string, password: string) => Promise<void>;
   register: (username: string, password: string) => Promise<void>;
   logout: () => void;
@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      // Optionally, validate the token with the backend
       setUser({ token });
     }
   }, []);
