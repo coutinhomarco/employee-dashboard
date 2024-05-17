@@ -1,6 +1,3 @@
-
-### Updated README
-
 ```markdown
 # Employee Management Dashboard
 
