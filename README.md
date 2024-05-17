@@ -1,4 +1,3 @@
-```markdown
 # Employee Management Dashboard
 
 This is a simple employee management dashboard built with Next.js, Chakra UI, and a Node.js backend with Express and MongoDB. The dashboard allows users to manage a list of employees, including adding, editing, and deleting employee records.
@@ -12,8 +11,6 @@ This is a simple employee management dashboard built with Next.js, Chakra UI, an
 - [API Endpoints](#api-endpoints)
 - [Testing](#testing)
 - [Future Enhancements](#future-enhancements)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 - View a list of employees
@@ -38,8 +35,6 @@ This is a simple employee management dashboard built with Next.js, Chakra UI, an
 ```bash
 git clone https://github.com/your-username/employee-management-dashboard.git
 cd employee-management-dashboard
-```
-
 ### Install Dependencies
 ```bash
 # For both frontend and backend
@@ -106,8 +101,6 @@ employee-management-dashboard/
 │   ├── src/
 │   │   ├── commands/
 │   │   ├── controllers/
-│   │   ├── command/
-│   │   ├── query/
 │   │   ├── models/
 │   │   ├── queries/
 │   │   ├── routes/
@@ -118,6 +111,9 @@ employee-management-dashboard/
 │   │   ├── bullmq.ts
 │   │   └── index.ts
 │   ├── tests/
+│   │   ├── controllers/
+│   │   ├── services/
+│   │   └── utils/
 │   ├── jest.config.js
 │   ├── package.json
 │   ├── tsconfig.json
@@ -181,5 +177,3 @@ describe('Employee Command Controller', () => {
 - Implement pagination for employee list
 - Add unit and integration tests
 - Enhance error handling and validation
-
-```
