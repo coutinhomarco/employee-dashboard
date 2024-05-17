@@ -63,6 +63,7 @@ const EditEmployee = () => {
     e.preventDefault();
     setLoading(true);
     try {
+      if (!id) return;
       const response = await fetch(`${apiUrl}/api/employees/${id}`, {
         method: 'PUT',
         headers: {

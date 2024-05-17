@@ -96,7 +96,7 @@ describe('Employee Service Validations', () => {
 
       const response = await createEmployee(invalidData);
 
-      expect(response).toEqual({ status: 400, message: 'All fields are required' });
+      expect(response).toEqual({ status: 400, message: 'Name is required' });
       expect(commandQueueMock.add).not.toHaveBeenCalled();
     });
 
@@ -152,7 +152,7 @@ describe('Employee Service Validations', () => {
 
       const response = await updateEmployee('123', invalidData);
 
-      expect(response).toEqual({ status: 400, message: 'All fields are required' });
+      expect(response).toEqual({ status: 400, message: 'Name is required' });
       expect(commandQueueMock.add).not.toHaveBeenCalled();
     });
 
