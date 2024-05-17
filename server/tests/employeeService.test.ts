@@ -1,5 +1,5 @@
-import { createEmployee, updateEmployee, deleteEmployee } from '../src/services/employee/employeeCommandService'; // Adjust the path as needed
-import { getEmployees, getEmployeeById } from '../src/services/employee/employeeQueryService'; // Adjust the path as needed
+import { EmployeeCommandService } from '../src/services/employee/employeeCommandService';
+import { EmployeeQueryService } from '../src/services/employee/employeeQueryService';
 import { mock, MockProxy } from 'jest-mock-extended';
 import { Queue, Job } from 'bullmq';
 import { Employee } from '../src/types/employee';
@@ -55,7 +55,7 @@ describe('Employee Service Validations', () => {
     it('should add a job to queryQueue and return status 200', async () => {
       queryQueueMock.add.mockResolvedValueOnce(mockJob);
 
-      const response = await getEmployees();
+      const response = await EmployeeQueryService.getEmployees();
 
       expect(response).toEqual({ status: 200, message: 'Employees retrieval in progress', data: 'job-id' });
       expect(queryQueueMock.add).toHaveBeenCalledWith('getAllEmployees', {}, expect.any(Object));
@@ -64,7 +64,7 @@ describe('Employee Service Validations', () => {
 
   describe('getEmployeeById', () => {
     it('should return status 400 if no id is provided', async () => {
-      const response = await getEmployeeById('');
+      const response = await EmployeeQueryService.getEmployeeById('');
 
       expect(response).toEqual({ status: 400, message: 'Employee ID is required' });
       expect(queryQueueMock.add).not.toHaveBeenCalled();
@@ -73,7 +73,7 @@ describe('Employee Service Validations', () => {
     it('should add a job to queryQueue and return status 200', async () => {
       queryQueueMock.add.mockResolvedValueOnce(mockJob);
 
-      const response = await getEmployeeById('123');
+      const response = await EmployeeQueryService.getEmployeeById('123');
 
       expect(response).toEqual({ status: 200, message: 'Employee retrieval in progress', data: 'job-id' });
       expect(queryQueueMock.add).toHaveBeenCalledWith('getEmployeeById', {}, expect.any(Object));
@@ -94,7 +94,7 @@ describe('Employee Service Validations', () => {
         name: '',
       };
 
-      const response = await createEmployee(invalidData);
+      const response = await EmployeeCommandService.createEmployee(invalidData);
 
       expect(response).toEqual({ status: 400, message: 'Name is required' });
       expect(commandQueueMock.add).not.toHaveBeenCalled();
@@ -106,7 +106,7 @@ describe('Employee Service Validations', () => {
         dateOfHire: new Date(Date.now() + 86400000).toISOString(), // Future date
       };
 
-      const response = await createEmployee(invalidData);
+      const response = await EmployeeCommandService.createEmployee(invalidData);
 
       expect(response).toEqual({ status: 400, message: 'Date of hire cannot be in the future' });
       expect(commandQueueMock.add).not.toHaveBeenCalled();
@@ -118,7 +118,7 @@ describe('Employee Service Validations', () => {
         dateOfHire: new Date(), // Date object instead of string
       } as unknown as Employee;
 
-      const response = await createEmployee(invalidData);
+      const response = await EmployeeCommandService.createEmployee(invalidData);
 
       expect(response).toEqual({ status: 400, message: 'Date of hire must be a string' });
       expect(commandQueueMock.add).not.toHaveBeenCalled();
@@ -129,7 +129,7 @@ describe('Employee Service Validations', () => {
 
       commandQueueMock.add.mockResolvedValueOnce(mockJob);
 
-      const response = await createEmployee(validData);
+      const response = await EmployeeCommandService.createEmployee(validData);
 
       expect(response).toEqual({ status: 201, message: 'Employee addition in progress', data: 'job-id' });
       expect(commandQueueMock.add).toHaveBeenCalledWith('addEmployee', expect.any(Object), expect.any(Object));
@@ -150,7 +150,7 @@ describe('Employee Service Validations', () => {
         name: '',
       };
 
-      const response = await updateEmployee('123', invalidData);
+      const response = await EmployeeCommandService.updateEmployee('123', invalidData);
 
       expect(response).toEqual({ status: 400, message: 'Name is required' });
       expect(commandQueueMock.add).not.toHaveBeenCalled();
@@ -162,7 +162,7 @@ describe('Employee Service Validations', () => {
         dateOfHire: new Date(Date.now() + 86400000).toISOString(), // Future date
       };
 
-      const response = await updateEmployee('123', invalidData);
+      const response = await EmployeeCommandService.updateEmployee('123', invalidData);
 
       expect(response).toEqual({ status: 400, message: 'Date of hire cannot be in the future' });
       expect(commandQueueMock.add).not.toHaveBeenCalled();
@@ -174,7 +174,7 @@ describe('Employee Service Validations', () => {
         dateOfHire: new Date(), // Date object instead of string
       } as unknown as Employee;
 
-      const response = await updateEmployee('123', invalidData);
+      const response = await EmployeeCommandService.updateEmployee('123', invalidData);
 
       expect(response).toEqual({ status: 400, message: 'Date of hire must be a string' });
       expect(commandQueueMock.add).not.toHaveBeenCalled();
@@ -185,7 +185,7 @@ describe('Employee Service Validations', () => {
 
       commandQueueMock.add.mockResolvedValueOnce(mockJob);
 
-      const response = await updateEmployee('123', validData);
+      const response = await EmployeeCommandService.updateEmployee('123', validData);
 
       expect(response).toEqual({ status: 201, message: 'Employee update in progress', data: 'job-id' });
       expect(commandQueueMock.add).toHaveBeenCalledWith('editEmployee', expect.any(Object), expect.any(Object));
@@ -194,7 +194,7 @@ describe('Employee Service Validations', () => {
 
   describe('deleteEmployee', () => {
     it('should return status 400 if no id is provided', async () => {
-      const response = await deleteEmployee('');
+      const response = await EmployeeCommandService.deleteEmployee('');
 
       expect(response).toEqual({ status: 400, message: 'Employee ID is required' });
       expect(commandQueueMock.add).not.toHaveBeenCalled();
@@ -203,7 +203,7 @@ describe('Employee Service Validations', () => {
     it('should add a job to commandQueue and return status 201', async () => {
       commandQueueMock.add.mockResolvedValueOnce(mockJob);
 
-      const response = await deleteEmployee('123');
+      const response = await EmployeeCommandService.deleteEmployee('123');
 
       expect(response).toEqual({ status: 201, message: 'Employee removal in progress', data: 'job-id' });
       expect(commandQueueMock.add).toHaveBeenCalledWith('removeEmployee', { id: '123' }, expect.any(Object));
