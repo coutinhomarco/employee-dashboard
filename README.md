@@ -1,6 +1,6 @@
 # Employee Management Dashboard
 
-This is a simple employee management dashboard built with Next.js, Chakra UI, and a Node.js backend with Express and MongoDB. The dashboard allows users to manage a list of employees, including adding, editing, and deleting employee records.
+This is a simple employee management dashboard built with Next.js, Chakra UI, and a Node.js backend with Express and MongoDB. The dashboard allows users to manage a list of employees, including adding, editing, and deleting employee records. The project utilizes CQRS (Command Query Responsibility Segregation) architecture, BullMQ for job queuing, and Redis for efficient data caching and message brokering.
 
 ## Table of Contents
 - [Features](#features)
@@ -17,6 +17,8 @@ This is a simple employee management dashboard built with Next.js, Chakra UI, an
 - Add a new employee
 - Edit an existing employee's details
 - Delete an employee
+- Efficiently manage background tasks using BullMQ and Redis
+- Segregated command and query operations using CQRS
 
 ## Technologies Used
 - **Frontend**: Next.js, React, Chakra UI
@@ -30,11 +32,14 @@ This is a simple employee management dashboard built with Next.js, Chakra UI, an
 - Node.js (>= 14.x)
 - npm or yarn
 - MongoDB instance
+- Redis instance
 
 ### Clone the Repository
 ```bash
 git clone https://github.com/your-username/employee-management-dashboard.git
 cd employee-management-dashboard
+```
+
 ### Install Dependencies
 ```bash
 # For both frontend and backend
