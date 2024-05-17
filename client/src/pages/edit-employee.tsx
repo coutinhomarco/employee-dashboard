@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Button, FormControl, FormLabel, Input, Select, useToast, Spinner, Text } from '@chakra-ui/react';
 import Layout from '../app/components/Layout';
+import ProtectedRoute from '../../src/app/components/ProtectedRoute';
+
 
 type Employee = {
   _id: string;
@@ -28,12 +30,18 @@ const EditEmployee = () => {
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
-        const response = await fetch(`${apiUrl}/api/employees/${id}`);
+        const reqHeaders = {
+          "method": "GET",
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+          }          
+        }
+        const response = await fetch(`${apiUrl}/api/employees/${id}`, reqHeaders);
         if (!response.ok) {
           throw new Error('Failed to fetch employee details.');
         }
         const data = await response.json();
-        
         if (data.message === 'Employee retrieval in progress') {
           pollJobStatus(data.data);
         } else {
@@ -49,9 +57,15 @@ const EditEmployee = () => {
     const pollJobStatus = async (jobId: string) => {
       const interval = setInterval(async () => {
         try {
-          const response = await fetch(`${apiUrl}/api/job/${jobId}/status`);
+          const reqHeaders = {
+            "method": "GET",
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`,
+              'Content-Type': 'application/json'
+            }
+          }
+          const response = await fetch(`${apiUrl}/api/job/${jobId}/status`, reqHeaders);
           const data = await response.json();
-          
           if (data.state === 'completed') {
             clearInterval(interval);
             setEmployeeData(data.result);
@@ -131,33 +145,35 @@ const EditEmployee = () => {
   }
 
   return (
-    <Layout>
-      <Box as="form" onSubmit={handleSubmit}>
-        <FormControl id="name" mb={4} isRequired>
-          <FormLabel>Name</FormLabel>
-          <Input value={name} onChange={e => setName(e.target.value)} bg="gray.700" color="white" />
-        </FormControl>
-        <FormControl id="position" mb={4} isRequired>
-          <FormLabel>Position</FormLabel>
-          <Input value={position} onChange={e => setPosition(e.target.value)} bg="gray.700" color="white" />
-        </FormControl>
-        <FormControl id="department" mb={4} isRequired>
-          <FormLabel>Department</FormLabel>
-          <Select value={department} onChange={e => setDepartment(e.target.value)} bg="gray.700" color="white">
-            <option value="HR">HR</option>
-            <option value="Engineering">Engineering</option>
-            <option value="Marketing">Marketing</option>
-          </Select>
-        </FormControl>
-        <FormControl id="dateOfHire" mb={4} isRequired>
-          <FormLabel>Date of Hire</FormLabel>
-          <Input type="date" value={dateOfHire} onChange={e => setDateOfHire(e.target.value)} bg="gray.700" color="white" />
-        </FormControl>
-        <Button type="submit" colorScheme="teal">
-          Update Employee
-        </Button>
-      </Box>
-    </Layout>
+    <ProtectedRoute>
+      <Layout>
+        <Box as="form" onSubmit={handleSubmit}>
+          <FormControl id="name" mb={4} isRequired>
+            <FormLabel>Name</FormLabel>
+            <Input value={name} onChange={e => setName(e.target.value)} bg="gray.700" color="white" />
+          </FormControl>
+          <FormControl id="position" mb={4} isRequired>
+            <FormLabel>Position</FormLabel>
+            <Input value={position} onChange={e => setPosition(e.target.value)} bg="gray.700" color="white" />
+          </FormControl>
+          <FormControl id="department" mb={4} isRequired>
+            <FormLabel>Department</FormLabel>
+            <Select value={department} onChange={e => setDepartment(e.target.value)} bg="gray.700" color="white">
+              <option value="HR">HR</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Marketing">Marketing</option>
+            </Select>
+          </FormControl>
+          <FormControl id="dateOfHire" mb={4} isRequired>
+            <FormLabel>Date of Hire</FormLabel>
+            <Input type="date" value={dateOfHire} onChange={e => setDateOfHire(e.target.value)} bg="gray.700" color="white" />
+          </FormControl>
+          <Button type="submit" colorScheme="teal">
+            Update Employee
+          </Button>
+        </Box>
+      </Layout>
+    </ProtectedRoute>
   );
 };
 

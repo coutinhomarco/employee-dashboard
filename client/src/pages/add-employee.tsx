@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Box, Button, FormControl, FormLabel, Input, Select, useToast, Spinner, Text } from '@chakra-ui/react';
 import Layout from '../app/components/Layout';
+import ProtectedRoute from '../../src/app/components/ProtectedRoute';
 
 const AddEmployee = () => {
   const [name, setName] = useState('');
@@ -21,6 +22,7 @@ const AddEmployee = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          "Authorization": "Bearer " + localStorage.getItem('token')
         },
         body: JSON.stringify({ name, position, department, dateOfHire }),
       });
@@ -45,7 +47,14 @@ const AddEmployee = () => {
   const pollJobStatus = async (jobId: string) => {
     try {
       const interval = setInterval(async () => {
-        const response = await fetch(`${apiUrl}/api/job/${jobId}/status`);
+        const reqHeaders = {
+          "method": "GET",
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+          }
+        }
+        const response = await fetch(`${apiUrl}/api/job/${jobId}/status`, reqHeaders);
         const data = await response.json();
         
         if (data.state === 'completed') {
@@ -76,39 +85,41 @@ const AddEmployee = () => {
   };
 
   return (
-    <Layout>
-      {error && <Text color="red.500" mb={4}>{error}</Text>}
-      {loading && <Spinner size="xl" />}
-      <Box as="form" onSubmit={handleSubmit}>
-        <FormControl id="name" mb={4} isRequired>
-          <FormLabel>Name</FormLabel>
-          <Input value={name} onChange={e => setName(e.target.value)} bg="gray.700" color="white" />
-        </FormControl>
-        <FormControl id="position" mb={4} isRequired>
-          <FormLabel>Position</FormLabel>
-          <Input value={position} onChange={e => setPosition(e.target.value)} bg="gray.700" color="white" />
-        </FormControl>
-        <FormControl id="department" mb={4} isRequired>
-          <FormLabel>Department</FormLabel>
-          <Select defaultValue={"HR"} value={department} onChange={e => setDepartment(e.target.value)} bg="gray.700" color="white">
-            <option value="HR">HR</option>
-            <option value="Engineering">Engineering</option>
-            <option value="Marketing">Marketing</option>
-            <option value="Sales">Sales</option>
-            <option value="Finance">Finance</option>
-            <option value="Operations">Operations</option>
-            <option value="Director">Director</option>
-          </Select>
-        </FormControl>
-        <FormControl id="dateOfHire" mb={4} isRequired>
-          <FormLabel>Date of Hire</FormLabel>
-          <Input type="date" value={dateOfHire} onChange={e => setDateOfHire(e.target.value)} bg="gray.700" color="white" />
-        </FormControl>
-        <Button type="submit" colorScheme="teal">
-          Add Employee
-        </Button>
-      </Box>
-    </Layout>
+    <ProtectedRoute>
+      <Layout>
+        {error && <Text color="red.500" mb={4}>{error}</Text>}
+        {loading && <Spinner size="xl" />}
+        <Box as="form" onSubmit={handleSubmit}>
+          <FormControl id="name" mb={4} isRequired>
+            <FormLabel>Name</FormLabel>
+            <Input value={name} onChange={e => setName(e.target.value)} bg="gray.700" color="white" />
+          </FormControl>
+          <FormControl id="position" mb={4} isRequired>
+            <FormLabel>Position</FormLabel>
+            <Input value={position} onChange={e => setPosition(e.target.value)} bg="gray.700" color="white" />
+          </FormControl>
+          <FormControl id="department" mb={4} isRequired>
+            <FormLabel>Department</FormLabel>
+            <Select defaultValue={"HR"} value={department} onChange={e => setDepartment(e.target.value)} bg="gray.700" color="white">
+              <option value="HR">HR</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Sales">Sales</option>
+              <option value="Finance">Finance</option>
+              <option value="Operations">Operations</option>
+              <option value="Director">Director</option>
+            </Select>
+          </FormControl>
+          <FormControl id="dateOfHire" mb={4} isRequired>
+            <FormLabel>Date of Hire</FormLabel>
+            <Input type="date" value={dateOfHire} onChange={e => setDateOfHire(e.target.value)} bg="gray.700" color="white" />
+          </FormControl>
+          <Button type="submit" colorScheme="teal">
+            Add Employee
+          </Button>
+        </Box>
+      </Layout>
+    </ProtectedRoute>
   );
 };
 
