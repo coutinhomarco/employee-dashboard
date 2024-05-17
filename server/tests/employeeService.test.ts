@@ -2,7 +2,7 @@ import { EmployeeCommandService } from '../src/services/employee/employeeCommand
 import { EmployeeQueryService } from '../src/services/employee/employeeQueryService';
 import { mock, MockProxy } from 'jest-mock-extended';
 import { Queue, Job } from 'bullmq';
-import { Employee } from '../src/types/employee';
+import { Employee } from '../types/employee';
 
 // Mocking the queryQueue and commandQueue
 jest.mock('../src/utils/bullmq', () => {

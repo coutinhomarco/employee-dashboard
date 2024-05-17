@@ -1,5 +1,5 @@
 import { log } from 'console';
-import { Employee } from '../../types/employee';
+import { Employee } from '../../../types/employee';
 
 export const validateEmployeeData = (data: Employee) => {
   if (!data.name) {

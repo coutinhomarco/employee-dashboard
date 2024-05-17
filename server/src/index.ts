@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import employeeRoutes from './routes/employeeRoutes';
 import jobRoutes from './routes/jobRoutes';
+import authRoutes from './routes/authRoutes';
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ mongoose.connect(MONGODB_URI)
 
 app.use('/api', employeeRoutes);
 app.use('/api', jobRoutes);
+app.use('/api', authRoutes)
 
 
 app.listen(PORT, () => {

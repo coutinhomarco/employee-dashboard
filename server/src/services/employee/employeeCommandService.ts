@@ -1,5 +1,5 @@
 import { commandQueue } from '../../utils/bullmq';
-import { Employee } from '../../types/employee';
+import { Employee } from '../../../types/employee';
 import { validateEmployeeData } from '../../utils/validations/validateEmployee';
 import { ReturnInterface } from '../../utils/interfaces/returnInterface';
 
