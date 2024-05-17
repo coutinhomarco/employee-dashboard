@@ -1,22 +1,15 @@
 import { Request, Response } from 'express';
-import { commandQueue, queryQueue } from '../../utils/bullmq';
+import { JobService } from '../../services/job/jobService'; // Adjust the path if needed
 
 export const getJobStatus = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const job = await commandQueue.getJob(id) || await queryQueue.getJob(id);
-    
-    if (!job) {
-      return res.status(404).json({ error: 'Job not found' });
-    }
-
-    const state = await job.getState();
-    const progress = job.progress;
-    const result = job.returnvalue;
-    const failedReason = job.failedReason;
-
-    res.json({ id: job.id, state, progress, result, failedReason });
+    const jobStatus = await JobService.getJobStatus(id);
+    res.json(jobStatus);
   } catch (error: any) {
+    if (error.message === 'Job not found') {
+      return res.status(404).json({ error: error.message });
+    }
     res.status(500).json({ error: error.message });
   }
 };

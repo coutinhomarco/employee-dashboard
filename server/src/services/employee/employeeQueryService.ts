@@ -1,4 +1,4 @@
-import { queryQueue, queryQueueEvents } from '../utils/bullmq';
+import { queryQueue, queryQueueEvents } from '../../utils/bullmq';
 
 export const getEmployees = async () => {
   try {

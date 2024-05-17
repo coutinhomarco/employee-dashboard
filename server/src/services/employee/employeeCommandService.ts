@@ -1,6 +1,6 @@
-import { commandQueue } from '../utils/bullmq';
-import { Employee } from '../types/employee';
-import { validateEmployeeData } from '../utils/validations/validateEmployee';
+import { commandQueue } from '../../utils/bullmq';
+import { Employee } from '../../types/employee';
+import { validateEmployeeData } from '../../utils/validations/validateEmployee';
 
 export const createEmployee = async (data: Employee) => {
   try {

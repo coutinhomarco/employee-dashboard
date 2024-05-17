@@ -44,6 +44,9 @@ Here is an overview of the project's architecture:
 
 ![Architecture Diagram](diagram.png)
 
+## Database schema:
+
+![Database Schema](database.png)
 
 ## Installation
 

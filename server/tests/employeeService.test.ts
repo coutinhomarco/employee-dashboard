@@ -1,5 +1,5 @@
-import { createEmployee, updateEmployee, deleteEmployee } from '../src/services/employeeCommandService'; // Adjust the path as needed
-import { getEmployees, getEmployeeById } from '../src/services/employeeQueryService'; // Adjust the path as needed
+import { createEmployee, updateEmployee, deleteEmployee } from '../src/services/employee/employeeCommandService'; // Adjust the path as needed
+import { getEmployees, getEmployeeById } from '../src/services/employee/employeeQueryService'; // Adjust the path as needed
 import { mock, MockProxy } from 'jest-mock-extended';
 import { Queue, Job } from 'bullmq';
 import { Employee } from '../src/types/employee';
