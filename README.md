@@ -86,6 +86,8 @@ employee-management-dashboard/
 ├── backend/
 │   ├── src/
 │   │   ├── controllers/
+│   │   ├── command/
+│   │   ├── query/
 │   │   ├── models/
 │   │   ├── routes/
 │   │   ├── services/
