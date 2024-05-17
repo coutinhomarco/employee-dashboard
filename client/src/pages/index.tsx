@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { Table, Thead, Tbody, Tr, Th, Td, Button, Box, Input, Text, Spinner } from '@chakra-ui/react';
 import Layout from '../app/components/Layout';
 
@@ -17,6 +18,8 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
 
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  const router = useRouter();
 
   const fetchEmployees = async () => {
     setLoading(true);
@@ -129,9 +132,7 @@ const Home = () => {
                 <Button
                   colorScheme="blue"
                   mr={2}
-                  onClick={() => {
-                    // navigate to edit page
-                  }}
+                  onClick={() => router.push(`/edit-employee?id=${employee._id}`)}
                 >
                   Edit
                 </Button>
