@@ -8,11 +8,11 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => (
   <Box>
-    <Flex as="header" bg="teal.500" p={4} color="white" justifyContent="space-between">
+    <Flex as="header" bg="gray.800" p={4} color="white" justifyContent="space-between">
       <Heading size="md">Admin Dashboard</Heading>
       <HStack spacing={4}>
-        <Link as={NextLink} href="/">Home</Link>
-        <Link as={NextLink} href="/add-employee">Add Employee</Link>
+        <Link as={NextLink} href="/" color="white">Home</Link>
+        <Link as={NextLink} href="/add-employee" color="white">Add Employee</Link>
       </HStack>
     </Flex>
     <Box as="main" p={4}>

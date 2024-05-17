@@ -82,15 +82,15 @@ const AddEmployee = () => {
       <Box as="form" onSubmit={handleSubmit}>
         <FormControl id="name" mb={4} isRequired>
           <FormLabel>Name</FormLabel>
-          <Input value={name} onChange={e => setName(e.target.value)} />
+          <Input value={name} onChange={e => setName(e.target.value)} bg="gray.700" color="white" />
         </FormControl>
         <FormControl id="position" mb={4} isRequired>
           <FormLabel>Position</FormLabel>
-          <Input value={position} onChange={e => setPosition(e.target.value)} />
+          <Input value={position} onChange={e => setPosition(e.target.value)} bg="gray.700" color="white" />
         </FormControl>
         <FormControl id="department" mb={4} isRequired>
           <FormLabel>Department</FormLabel>
-          <Select defaultValue={"HR"} value={department} onChange={e => setDepartment(e.target.value)}>
+          <Select defaultValue={"HR"} value={department} onChange={e => setDepartment(e.target.value)} bg="gray.700" color="white">
             <option value="HR">HR</option>
             <option value="Engineering">Engineering</option>
             <option value="Marketing">Marketing</option>
@@ -102,7 +102,7 @@ const AddEmployee = () => {
         </FormControl>
         <FormControl id="dateOfHire" mb={4} isRequired>
           <FormLabel>Date of Hire</FormLabel>
-          <Input type="date" value={dateOfHire} onChange={e => setDateOfHire(e.target.value)} />
+          <Input type="date" value={dateOfHire} onChange={e => setDateOfHire(e.target.value)} bg="gray.700" color="white" />
         </FormControl>
         <Button type="submit" colorScheme="teal">
           Add Employee

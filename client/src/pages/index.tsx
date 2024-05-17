@@ -109,16 +109,18 @@ const Home = () => {
           placeholder="Search employees..."
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
+          bg="gray.800"
+          color="white"
         />
       </Box>
       <Table variant="simple">
         <Thead>
           <Tr>
-            <Th>Name</Th>
-            <Th>Position</Th>
-            <Th>Department</Th>
-            <Th>Date of Hire</Th>
-            <Th>Actions</Th>
+            <Th color="white">Name</Th>
+            <Th color="white">Position</Th>
+            <Th color="white">Department</Th>
+            <Th color="white">Date of Hire</Th>
+            <Th color="white">Actions</Th>
           </Tr>
         </Thead>
         <Tbody>
