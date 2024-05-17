@@ -5,6 +5,7 @@ This is a simple employee management dashboard built with Next.js, Chakra UI, an
 ## Table of Contents
 - [Features](#features)
 - [Technologies Used](#technologies-used)
+- [Architecture](#architecture)
 - [Installation](#installation)
 - [Running the Application](#running-the-application)
 - [Project Structure](#project-structure)
@@ -25,6 +26,23 @@ This is a simple employee management dashboard built with Next.js, Chakra UI, an
 - **Backend**: Node.js, Express, TypeScript, BullMQ, Redis, MongoDB
 - **Database**: MongoDB
 - **Styling**: Chakra UI
+
+## Architecture
+
+The Employee Management Dashboard follows a modern architecture pattern incorporating CQRS, BullMQ, and Redis to ensure scalability, maintainability, and efficient handling of background jobs. 
+
+### CQRS (Command Query Responsibility Segregation)
+CQRS separates the write (command) and read (query) operations of the system, providing a clear distinction between modifying data and retrieving data. This helps in scaling read and write operations independently and enhances the maintainability of the codebase.
+
+### BullMQ
+BullMQ is used for job queuing and processing. It handles background tasks like creating, updating, and deleting employee records, ensuring that these operations are performed asynchronously and efficiently.
+
+### Redis
+Redis is used as a message broker and caching layer. It improves the performance of the system by caching frequently accessed data and managing the job queue.
+
+Here is an overview of the project's architecture:
+
+![Architecture Diagram](docs/diagram.png)
 
 ## Installation
 
@@ -123,6 +141,8 @@ employee-management-dashboard/
 │   ├── package.json
 │   ├── tsconfig.json
 │   └── .env
+├── docs/
+│   └── diagram.png
 ├── README.md
 └── package.json
 ```
