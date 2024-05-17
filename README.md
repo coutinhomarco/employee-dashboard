@@ -109,6 +109,8 @@ employee-management-dashboard/
 │   ├── src/
 │   │   ├── commands/
 │   │   ├── controllers/
+│   │   ├── command/
+│   │   ├── query/
 │   │   ├── models/
 │   │   ├── queries/
 │   │   ├── routes/
