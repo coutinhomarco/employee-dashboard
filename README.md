@@ -424,7 +424,6 @@ Here are some request and response examples for the various API endpoints:
     }
     ```
 
-Feel free to include these examples in your README to help users understand how to interact with your API.
 
 ## Testing
 
